@@ -1,5 +1,5 @@
 # turra_workz
-Code for my single *TURRA_WORKZ*, which is in itself an edit of the song *TURRA* by Cazzu & Alan Gomez. Made using [TidalCycles](https://github.com/tidalcycles/Tidal) and [SuperCollider](https://github.com/supercollider/supercollider).
+Code for my single [*TURRA_WORKZ*](https://geikha.bandcamp.com/album/turra-workz-coded-00), which is in itself an edit of the song *TURRA* by Cazzu & Alan Gomez. Made using [TidalCycles](https://github.com/tidalcycles/Tidal) and [SuperCollider](https://github.com/supercollider/supercollider).
 
 ## About this repo
 
