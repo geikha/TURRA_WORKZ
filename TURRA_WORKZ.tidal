@@ -1,0 +1,271 @@
+-- TURRA_WORKZ
+-- GEIKHA
+
+setbpm $ 160
+
+let note' n = note (scale "major" n+6)
+
+-- MIX
+let _808 = s "660bdp" # cut 1 # sh 0.58 # g 1.1 # o 6
+    _sub = s "supersine" # oc 3 # ar 0.04 0.61 # sh 0.12 # l 3 # cut 1 # g 0.63 # lpf 240 # o 7
+    _gtr = s "turra2" # cut 1 # room' 0.1 0.7 # hpf 200 # sp 1 # rel 0.35 # sh 0.2 # side 0.6 # o 8
+    _vox = s "turra4" # ts 1.13 # tsw 1.75 # l 1 # hpf 100 # sh 0.23 # rel 0.6 # g 0.97 # air 0.13 # o 9 # declick
+    _vox2 = s "turra4" # n 0 # l 1 # hpf 400 # g 0.9 # pitch 2 # gater 0.8 # wider 0.4 # o 10
+    _8082 = s "shabdplow" # cut 1 # sh 0.55 # sp 1 # o 6
+    _sub2 = s "supersaw" # oc 2 # ar 0.04 0.6 # sh 0.2 # triode 0.3 # l 2 # cut 1 # g 0.65 # lpf 800 # o 7
+    _8082ht = s "8082ht" |+ note 0.25
+
+-- VARS
+let kb = slow "1 <1 2> 1" $ (rotR (0/8)) $ mono $ foot "<4 5>"
+    kb0 = slow "1 <1 <1 2>> 1" $ (rotR (0/8)) $ mono $ foot "<0 5>"
+    bass = "<1 -2 -5 [-5_3 -7]>"
+    kb2 = slow "1 1" $ (rotR (0/8)) $ mono $ foot "0 <0 4> 0"
+    kb2' = slow "1 1" $ (rotR (0/8)) $ mono $ foot "[[<0 0 0 6> <0 4> 0]*8 [0 2 2]*8]/8"
+    bass2 = ("<<[1@3 -2] -7> <[-5@3 -3] -2>>/4"|+ "0@7%6 <0!7 5!16>")
+    kb3 = slow "1 <1 2> 1" $ (rotR (0/8)) $ mono $ foot "<9 0 0 6> <0 14>"
+    bass3 = "<0 [1_3 2] -2 [-1_3 -5]>"
+    kb4 = slow "1 <1 1 2> 1" $ (rotR (0/8)) $ mono $ foot "<4 5>"
+
+do
+  setCycle $ 0
+  all $ id
+  hush
+  p "song" $ fix (|+ note 0.33) (s "660bdp") $ arrange $ map (\(t,ps) -> (t, stack ps)) [
+    (8*1,
+      [ -- intro
+        kb # note' bass # _808,
+        chat' 4 4 _gtr # lpf 12000
+      ]),
+    (8*1,
+      [
+        stack [
+          mask "<t!7 [t f!3]>" $ kb # "jktnbd" # g "1_1e 0.8" # hpf 110 # o 0 # rel 0.2
+          ,mask "<t!7 [t!5 f!3]>" $ "1([0 9 7],16,1)" # _8082ht |+ note "<0!3 3>" # sp 2 # sh 0.4 # o 1
+        ],
+        (|* g "<1!7 [1 0!3]>") $ kb # note' bass # _808,
+        silence,
+        chat' 4 4 _gtr # rel 0.38
+      ]),
+    (8*1,
+      [ -- turra, turra...
+        stack [
+          kb # "jktnbd" # g "1_1e 0.8" # hpf 110 # o 0 # rel 0.2
+          ,"<[1] [1~~[~1]] [1] [1 1 ~ ~ . ~]>" # "r70bd:23" # att 0.003 # rel 0.5 # sh 0.2 |- note 5 # b 0.018 # lpf 9000 # o 13
+          ,silence,"1([0 9 7],16,1)" # _8082ht |+ note "<0!3 3>" # sp 2 # sh 0.4 # o 1
+          ,press $ "1*2" # "808cp2:2" |+ note 1 # e 0.2 # b 0.01 # g 1.05 # sh 0.1 # o 3 # hpf 300 # wider 0.3 # acc 0.2
+        ],
+        kb # note' bass # _808,
+        kb # note' bass # _sub # note' bass,
+        chat' 4 4 _gtr # rel 0.35,
+        e "<1!4 [[1] [~0.5] ~ ~]!4>" # "turraturra" |* e 0.9 # ts 0.8 # tsw 2 # hpf 120 # sh 0.23 # air 0.13 # o 9 |* g 0.9 # wider 0.2 |* sp 0.75
+      ]),
+    (8*1,
+      [
+        stack [
+          mask "<t!7 [t f!5]>" $ kb0 # "jktnbd" # g "1_1e 0.8" # hpf 110 # o 0 # rel 0.2
+          ,"<[1] [1~~[~1]] [1~~[~1]] [1]>" # "r70bd:23" # att 0.003  # rel 0.5 # sh 0.2 |- note 5 # b 0.019 # o 13
+          ,mask "<t!7 [t!3 f!4]>" $ "1([0 9 7],16,1)" # _8082ht |+ note "<0!3 3>" # sp 2 # sh 0.4 # o 1
+          ,mask "<t!7 [t f]>" $ press $ "1*2" # "808cp2:2" |+ note 1 # e 0.2 # b 0.01 # g 1.05 # sh 0.1 # o 3 # hpf 300 # wider 0.3 # acc 0.2
+        ],
+        (|* g "<1!7 [1 0!5]>") $ kb0 # note' bass # _808,
+        (|* g "<1!7 [1 0!5]>") $ kb0 # note' bass # _sub # note' bass,
+        while "<f!7 [t!3]>" (\x -> x # hpf 420 # rel 0.2 # coarse 2) $ chat' 4 4 _gtr # rel 0.35,
+        e "<1!4 [[1] [~0.5] ~ ~]!3 [0.3]>" # "turraturra" |* e 0.9 # cut 1 # ts 0.95 # tsw 2 # hpf 120 # sh 0.23 # air 0.13 # o 9 |* g 0.9 # wider 0.2 |* sp 1,
+        mask "<f!7 [f@1%3 t]>" $ chat' 8 8 _vox
+      ]),
+    (8*1,
+      [ -- EL ME DICE TURRA
+        stack [
+          kb # "jktnbd" # g "1_1e 0.8" # hpf 110 # o 0 # rel 0.2
+          ,"<1 1 [1~~[~1]] [1]>" # "r70bd:23" # att 0.004 # rel 0.5 # sh 0.2 |* g 0.95 |- note 5 # b 0.019 # lpf 9000 # o 13
+          ,"1([0 9 7],16,1)" # _8082ht |+ note "<0!3 3>" # sp 2 # sh 0.4 # o 1
+          ,press $ "1*2" # "8082cp" |+ note 1 # rel 0.2 # g 1.12 # sh 0.13 # o 3
+          ,"~808rim:0(1 3 8,8)" # sh 0.3 |* g 0.87 |+ note 5 # o 12
+        ],
+        kb # note' bass # _808,
+        kb # note' bass # _sub # note' bass,
+        chat' 4 4 _gtr # rel 0.35,
+        (|+ n "<0!7 [0@1%3 1]>") $ chat' 8 8 _vox
+      ]),
+    (8*1,
+      [
+        stack [
+          while "<ft>/4" (ukshift2) $ mask "<t!7 [t f]>" $ press "<1!4 [1*2]!4>" # "808cp2:2" |+ note 1 # e 0.2 # b 0.01 # g 1.05 # sh 0.1 # o 3 # hpf 300 # wider 0.3 # acc 0.2
+          ,mask "<t!7 [t!6 f!2]>" $ "1([0 9 <7 6 7 6 7 6 7 7>],16,1)" # _8082ht |+ note "<0!3 3>" # sp 2 # sh 0.4 # o 1
+          ,"<1!4 ~!4>" # "r70bd:23" # att 0.004 # rel "<0.2 0.2>/4" # sh 0.2 |- note 5  # b 0.019 # lpf 9000 |* g 0.87 # o 13
+          ,mask "<t!7 [t!6 f!2]>" $ "~808rim:0(1 3 8,8)" # sh 0.3 |* g 0.87 |+ note 0 # o 12 # hpf 400
+        ],
+        while "<ft>/4" (|* g "0@1%16 1@15%16") $ slow "<1!7 [1_1e 2]>" $ kb # note' bass # _808 # lpf "[900 950 1000 1050 1100 1200 1300]/2" |+ lpf 200 # att (slow 16 $ saw * 0.02) # rel 9999,
+        while "<ft>/4" (|* g "0@1%16 1@15%16") $ slow "<1!7 [1_1e 2]>" $ kb # _sub # note' bass # l "<99!15 [99@1%16 0.5]>",
+        (|* rel "<1!7 [1@3q 0.75@1q]>") $ while "<ft>/4" (\x -> x |+ b 0.02 |* sp "0.5@1%16 1@15%16") $ chat' 4 4 _gtr # rel 0.35,
+        (|+ n "<0!7 [0@1%3 1@2%3]>") $ chat' 8 8 _vox # n 1
+      ]),
+    (8*2,
+      [ -- tu coche al piso me tiene enganchá
+        mask "<t!15 [t f]>" $ quant "<0 12>/4" $ stack [
+            mask "<t!15 [tfff]>" $ kb2 # "jktnbd" # g "1_1e 0.8" # hpf 100 # o 0 # rel 0.2 |- note 2
+            ,degby "<0 0.3 0.1 0.3>/4" $ mono $ foot "<3 5>/8" # "8082perc" |+ note 2 # rel 0.1 # hpf 100 # o 4
+            ,press $ "1" # "808cp2:4" |+ note 2 # rel 0.3 # g 1.23 # sh 0.15 # o 3
+            ,mask "<ft>/8" $ (slow 2 $ rktsd) # "rktsd:3" # bpf (1100+(irand 100)) # b 0.01 # rel 0.17 # o 5 # acc "<0 0.2>/4"
+        ],
+        (|* g "<1!15 [1 0!3]>") $ mask "<t!15 [ttff]>" $ quant "<0 12>/4" $ kb2 # note' bass2 # _808 # triode 0.12 # sh 0.6,
+        (|* g "<1!15 [1 0!3]>") $ quant "<0 12>/4" $ mask "<[t@1%64 f]*2 t>/4" $ kb2 # note' bass2 # _sub,
+        struct "1*<4 6>/4" $ chat' 4 4 _gtr # rel 0.17 # room 0.23 # hpf 350 # lpf 12000,
+        (|* g "<1!15 [1@7%16 0@7%16 1@2%16]>") $ chat' 8 8 _vox # n ("<2!7 [2@3%10 3@7%10] 3!7 [3@8%10 4@2%10]>")
+      ]),
+    (8*2,
+      [ -- si buscaba fuego, tengo pa' repartir
+        mask "<t!15 [t@1%16 f]>" $ stack [
+          kb2' # "jktnbd" # g "1_1e 0.8" # hpf 110 # o 0 # rel 0.2
+          ,"<[1] [1~~[~1]] [1] [1~~[~1]] [1~~1] [1~~1] [1~~1] 1>" # "r70bd:23" # att 0.004 # rel 0.5 |* g 0.9 # sh 0.2 |- note 5 # b 0.018 # lpf 9000 # o 13
+          ,mask "<tf>/8" $ "1([0 9 6],16,1)" # _8082ht |+ note "<0!3 3>" # sp 2 # sh 0.4 # o 1
+          ,mask "<tf>/8" $ ukshift2 $ press $ "1*2" # "8082cp" |+ note 1 # rel 0.2 # g 1.2 # sh 0.13 # o 3
+        ],
+        mask "<t!15 [t@1%16 f]>" $ kb2' # note' "-5_3 <2!8 -1!5 -2 -4 -4>" # _808,
+        silence,
+        mask "<t!15 [tttff]>" $ chat' 4 4 _gtr # rel 0.35,
+        chat' 8 8 _vox # n ("<4!7 [4@2%3 5@1%3] 5!7 [5 6]>")
+      ]),
+    (8*2,
+      [ -- EL ME DICE TURRA
+        mask "<t!15 [t t t t f]>" $ stack [
+          kb # "jktnbd" # g "1_1e 0.8" # hpf 110 # o 0 # rel 0.2
+          ,mask "t" $ "1" # "r70bd:23" # att 0.003 # rel 0.5 # sh 0.1 |- note 5 # b 0.019 # lpf 9000 # o 13 # ts 1.4 # tsw 0.8
+          ,"1([0 9 7],16,1)" # _8082ht |+ note "<0!3 3>" # sp 2 # sh 0.4 # o 1
+          -- ,press $ "1*2" # "8082cp" |+ note 1 # rel 0.2 # g 1.2 # sh 0.13 # o 3
+          ,rktsd # "rktsd:3" # bpf 1100 # b 0.012 # rel 0.3 # o 5 # sh 0.2
+          ,mask "<ft>/8" $ (panrand' 0.2) $ un1 "660oh(5,16)" # g 0.72 # cut 3 # rel 0.26 # trem' 16 0.23 # o 5 # coarse 2
+          ,mask "<f t>" $ "~808rim:0(1 3 8,8)" # sh 0.3 |* g 0.87 |+ note 5 # o 12
+        ],
+        kb # note' bass # _808,
+        kb # _sub # note' bass,
+        chat' 4 4 _gtr # rel 0.38 |* sp "<0.5 1>/8" # triode "<0.5 0.2>/8",
+        chat' 8 8 _vox # n ((0.5 <~) "<6 7>/8")
+      ]),
+    (8*2,
+      [ -- CON TU KARITA
+        stack [
+          (|* g "<1!7 [1_2 0] 1!8>") $ mask "<tf>/8" $ kb # "jktnbd" # g "1_1e 0.8" # hpf 110 # o 0 # rel 0.2 # dist "0.1_1e 0"
+          ,mask "<t!7 [t!3 f] t!8>" $ "<[8082hh*[16|6]*4]!8 [8082hh*16]!8>" |+ note 5 # g 0.85 # l 1 # rel 0.2 # o 2
+          ,mask "<ft>/8" $ rktsd # "rktsd:3" # b 0.012 # rel 0.3 # o 5 # sh 0.2
+          ,mask "<ft>/8" $ "1 ~ 1!6" # "rktbd" # n 5 |* g 0.9 # rel 0.15 # sh 0.2 # b 0.02 # o 13
+          ,mask "<ft>/8" $ "1" # "jktnbd" # g "1_1e 0.8" # hpf 110 # o 0 # rel 0.2 # dist 0.1
+        ],
+        (|* g "<1!7 [1_2 0] 1!8>") $ kb # note' bass # _808,
+        (|* g "<1!7 [1_2 0] 1!8>") $ kb # _sub # note' bass,
+        chat' "<4!4 8!3 [8 4] 8!8>" 4 _gtr # rel "<0.35!4 0.23!4 0.6!8>" # room 0.23 |* sp "<1 2>/8",
+        arrange [
+          (4,chat' 8 8 _vox # n 6),
+          (1,while "ft" (\x -> x # pan (range 0.2 0.8 $ rotL 2 $ rand) # freeze 1) $ (4 <~) $ chat' 8 8 _vox # n 6 # delay' 0.42 0.31 0.91 |* g 0.93),
+          (3+8,silence)
+        ],
+        arrange [
+        (8, b' 8 "[~/2,4]" # _vox2),
+        (8, b' 8 "[1/2,4]" # _vox2)
+        ]
+      ]),
+    (8*2,
+      [ -- papi, con tu carita
+        mask "<tf>/8" $ stack [
+          "1/16" # "jktnbd" # g "1_1e 0.8" # hpf 110 # o 0 # rel 0.2 # dist 0.1
+          ,"8082hh*[16|6]*4" |+ note 8 # g 0.85 # l 1 # rel 0.2 # o 2
+          ,rktsd # "rktsd:3" # b 0.012 # rel 0.3 # o 5 # sh 0.2
+          ,"<[1*2]!4 1!4>" # "rktbd" # n 5 |* g 0.9 # rel 0.15 # sh 0.2 # b 0.04 # o 13
+        ],
+        mask "<t!15 f>" $ (|* sp "1 [1 1 <2 1.5>/8]") $ kb # note' bass # _808,
+        silence,
+        chat' 4 4 _gtr # rel 0.38 # ts 1.4 # tsw 2 |* sp "1 2",
+        silence,
+        arrange [
+          (8, b' 8 "[[~3.5~~]/2,4]" # _vox2),
+          (8, b' 8 "[[5]/2,4]" # _vox2)
+        ]
+      ]),
+    -- (8*1, [silence]), -- [SINGLE VERSION ENDS]
+    (8*2,
+      [ -- yo me quiero enviciar...
+        arrange [
+          (8, off 0.02 (\x -> ply 2 $ x # ts 2.4 # tsw 2 # hpf 900) $ "1([0 9 6],16,1)" # "808ht:10" |+ nt 6.6 |+ note' "[0..-8]" # sp 2 # sh 0.6 # triode 2 # l 1 # amp 0.5 # o 1),
+          (8, off 0.02 (\x -> ply 2 $ x # ts 2.4 # tsw 2 # hpf 900) $ "1([0 9 6],16,1)" # "808ht:10" |+ nt 6.6 |+ note' "[0 -1 -2 -3 -4 -5 -6 -7 <-8 -5!7>]" # sp 2 # sh 0.6 # triode 2 # l 1 # amp 0.5 # room 0.2 # o 1)
+        ],
+        mask "<t!15 [t@1%16 f]>" $ kb3 # note' bass3 # _8082 |- acc "<0!15 0.3>" |+ b "<0!15 0.05>",
+        silence,
+        chat' 4 4 _gtr # rel 0.38 # freeze "<0 1>/8" |+ b 0.004 # phaser' 0.5 0.7 # lpf 9000,
+        (|* g (sawosc 0.8 1 (1/8))) $ (# lpf (sawosc 100 12000 (1/8))) $ tl' 0.5 7 $ (chat' 16 8 _vox) # n "<8>/8" # rel 0.1 # side 0.7,
+        arrange [
+          (8, b' 8 "[[5]/2,0.2]" # _vox2),
+          (8, mask "<t t t f t t t [tttf]>" $ pressBy "<0.5!6 0 0>" $ chop 6 $ be' 8 1 "[0.2]" # _vox2 # rel 0.2 |+ b 0.01 # wider 0.2 # side 0.7 # triode 0.2 # lpf (sawosc 15000 300 (1/8)) # room' 0.2 0.8)
+        ]
+      ]),
+    (8*2,
+      [ -- que se asusta si me ven calladita
+        stack [
+          off 0.02 (\x -> ply 2 $ x # ts 2.4 # tsw 2 # hpf 900) $ "1([0 9 6],16,[1 1 <1!3 2>])" # "808ht:10" |+ nt 6.6 |+ note' "[0 -1 -2 -3 -4 -5 -6 -6 <-8!7 -5>]" # sp 2 # sh 0.6 # triode 2 # l 1 # amp 0.5 # room 0.2 # o 1
+          ,press $ "1*2" # "8082cp" |+ note 2 # rel 0.2 # g 1.1 # sh 0.13 # o 3
+          ,mask "<f t>/8" $ press "808oh:1*4" # l 1 # hpf 600 # g 0.95 # o 2
+        ],
+        kb3 # note' bass3 # _8082,
+        kb3 # note' bass3 # _sub2,
+        chat' 4 4 _gtr # rel 0.38 # freeze "<0 1>/8" |+ b 0.004 # phaser' 0.5 0.7 # lpf 9000,
+        chat' 8 8 _vox # n "<8 9>/8"
+      ]),
+    (8*2,[
+      -- me pongo maliciosa
+        stack [
+          "1*4" # "jktnbd" # g "1_1e 0.8" # hpf 110 # o 0 # rel 0.2
+          ,mask "<ft>/8" $ off 0.02 (\x -> ply 2 $ x # ts 2.4 # tsw 2 # hpf 900) $ "1([0 9 6],16,1)" # "808ht:10" |+ nt 6.6 |+ note' "[0..-8]" # sp "[-2|2]*4" # e 0.1 # sh 0.6 # triode 2 # l 1 # amp 0.5 # room 0.2 # o 1
+          ,slow 2 $ rktsd # "rktsd:0" # rel 0.3 # o 5 # sh 0.2 # coarse 2 |- note 2 # ts 1.1
+        ],
+        kb3 # note' bass # _8082 |* speed "<1 2>/2" # l 2,
+        kb3 # note' bass3 # _sub2,
+        rev $ chat' 2 4 _gtr # lpf 12000 |* sp (-1) # hpf 300 # air 0.2 # triode 0.5 # enhance 0.1,
+        arrange [
+          (8*2-1, chat' 8 8 _vox # n "<3 4>/8"),
+          (0.89, (7 <~) $ chat' 16 8 _vox # n "4" # delay' 0.4 0.29 0.87 |* g 0.9 # pan (range 0.4 0.6 rand)),
+          (1, silence)
+        ]
+      ]),
+    (8*2,
+      [ -- outro
+        stack [
+          "1*4" # "jktnbd" # g "1_1e 0.8" # hpf 110 # o 0 # rel 0.2
+          ,off 0.02 (\x -> ply 2 $ x # ts 2.4 # tsw 2 # hpf 900) $ "1([0 9 6],16,1)" # "808ht:10" |+ nt 6.6 |+ note' "[0..-8]" # sp "[-2|2]*4" # e 0.1 # sh 0.6 # triode 2 # l 1 # amp 0.5 # room 0.2 # o 1
+          ,foot "<3 3 3 8>" # "8082perc" |+ note 2 # rel 0.1 # hpf 100 # o 4
+          ],
+        kb4 # note' bass3 # _808 |* sp 0.5 # lpf 1000,
+        rev $ chat' 2 4 _gtr # lpf 12000 |* sp (-2)
+      ]),
+    (8*4,
+      [ -- fin
+        silence
+      ])
+    ]
+
+-- CÓDIGO ORIGINAL
+
+do
+  hush
+  all $ id
+  setbpm $ 160
+  let trans = note (0)
+  let note' n = note (scale "major" n+6) |+ trans -- 2B
+  let kb = slow "1 <1 2> 1" $ (rotR (0/8)) $ mono $ foot "<4 5>"
+  let _swing = swingBy (0/12) 8
+  d1 $ stack [ silence
+    ,kb # "jktnbd" # g "1_1e 0.8" # hpf 100
+    -- ,"1([0 9 7],16,1)" # "8082ht" |+ note "<0!3 3>" # sp 2 # sh 0.4
+    -- ,"1([0 9 6],16,1)" # "808ht:10" |+ nt 6.6 |+ note' "[0..-8]" # sp 2 # sh 0.6 # triode 2 # l 1
+     -- ,"8082hh*[16|6]*4" |+ note 5 # g 0.8 # l 1 # rel 0.2
+     -- ,press $ "1*2" # "8082cp" |+ note 2 # rel 0.2 # g 1.1 # sh 0.13 -- # "808cp2:4"
+     -- ,foot 3 # "8082perc" |+ note 2 # rel 0.1 # hpf 100
+     -- ,rktsd # "rktsd:3" # bpf 1100 # b 0.012 # rel 0.3
+     -- ,un1 "660oh(5,16)" # g 0.8 # cut 3 # rel 0.4 # trem' 16 0.2
+     -- ,chat' 16 1 "amenbreak1" |+ note "<5 3>/8" # lpfrel 0.2 # rel 0.4 # l 1 # side 0.6 # crush 12
+    ] # room' 0.02 0.1
+  let bass = "<1 -2 -5 [-5_3 -7]>"--"-5"
+  d3 $ (|+ note 0.33) $ kb # note' bass # "660bdp" # cut 1 # sh 0.6 -- # lpf 15000
+  -- d4 $ kb # note' bass # "supersine" # oc 3 # ar 0.04 0.6 # sh 0.12 # l 3 # cut 1 # g 0.6 # lpf 240 |- note 0.06
+  d5 $ revOn 1 $ chat' 4 4 "turra2" # cut 1 # room' 0.1 0.7 # hpf 200 # sp 1 # rel 0.3 # sh 0.2 # side 0.6
+  -- d6 $ tl'' 8 (-0.5) $ chat' 8 8 $ "turra4" # n 0 # ts 1.25 # tsw 1.5 # l 1 # hpf 200 # room 0.2 |- note 0 # sh 0.2 # rel 0.6 # g 0.96 # air 0.13
+  -- d7 $ b' 8 "[~/2,4]" # "turra4" # n 0 # l 1 # hpf 400 # g 0.9 # pitch 2 # gater 0.8 # wider 0.4
+  getnow 8
