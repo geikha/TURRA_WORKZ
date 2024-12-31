@@ -19,7 +19,7 @@ Samples are stored in an encrypted .zip file, you can use the password `geikha` 
 
 ## About the licenses
 
-The code inside **`TURRA_WORKZ.tidal`** and its resulting audio is protected by the **CC BY-NC-SA license (Creative Commons Attribution-NonCommercial-ShareAlike)**. This means you are allow to view, share, and adapt the code as long as you credit me somewhere. You cannot use it for commercial purposes, and you may only share your modifications of the code or its audio under this license or a compatible one. This also applies to the artwork image provided above.
+The code inside **`TURRA_WORKZ.tidal`** and its resulting audio is protected by the **CC BY-NC-SA license (Creative Commons Attribution-NonCommercial-ShareAlike)**. This means you are allowed to view, share, and adapt the code as long as you credit me somewhere. You cannot use it for commercial purposes, and you may only share your modifications of the code or its audio under this license or a compatible one. This also applies to the artwork image provided above.
 
 The code inside **`SETUP_241227.tidal`** and everything inside the **`SC` folder** exist under the **GPL v3 license**. Meaning it may be used, shared, and modified at will. But distribution of modified versions must be shared under the same license.
 
