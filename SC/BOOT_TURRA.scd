@@ -41,10 +41,10 @@ s.waitForBoot {
 (
 ~recordName = "TURRA";
 ~recordOrbits = 14;
-~recordPath = "C:\\Users\\ritch\\Documents\\Tidal Projects\\RECORD\\" ++ ~recordName;
+~recordPath = "/some/path/" ++ ~recordName;
 ~recorders = {Recorder.new(s)}!~recordOrbits;
 ~recorders.do{ |rec, i|
-	var namepath = ~recordPath++"\\"++~recordName++"_ORBIT_"++i.asString++".wav";
+	var namepath = ~recordPath+/+~recordName++"_ORBIT_"++i.asString++".wav";
 	rec.record(namepath,~orbits[i],2);
 };
 );
